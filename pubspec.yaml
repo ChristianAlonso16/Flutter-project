@@ -4,7 +4,7 @@ description: "A new Flutter project."
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.4.3 <4.0.0'
+  sdk: '>=3.4.0 <4.0.0'
 
 dependencies:
   flutter:
@@ -18,31 +18,22 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+ 
   flutter_lints: ^3.0.0
 
 flutter:
+
   uses-material-design: true
 
-frontend:
-  phases:
-    preBuild:
-      commands:
-        - echo "Installing Flutter..."
-        - git clone https://github.com/flutter/flutter.git -b stable --depth 1
-        - export PATH="$PATH:`pwd`/flutter/bin"
-        - flutter doctor
-    build:
-      commands:
-        - export PATH="$PATH:`pwd`/flutter/bin"
-        - flutter pub get
-        - echo "Building Flutter Web app..."
-        - flutter build web
-        - echo "Build completed!"
-  artifacts:
-    baseDirectory: build/web
-    files:
-      - '**/*'
-  cache:
-    paths:
-      - node_modules/**/*
-      - flutter/bin/cache/**/*
+# Add environment setup for CI/CD
+build:
+  commands:
+    - echo "Installing Flutter..."
+    - git clone https://github.com/flutter/flutter.git -b stable --depth 1
+    - export PATH="$PATH:`pwd`/flutter/bin"
+    - flutter doctor
+    - flutter pub get
+    - echo "Building Flutter Web app..."
+    - flutter build web
+    - echo "Build completed!"
