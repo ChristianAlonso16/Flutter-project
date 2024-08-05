@@ -1,6 +1,5 @@
 name: firstapp
 description: "A new Flutter project."
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 version: 1.0.0+1
 
@@ -19,21 +18,33 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
- 
   flutter_lints: ^3.0.0
 
 flutter:
-
   uses-material-design: true
 
-build:
-  commands:
-    - echo "Installing Flutter..."
-    - git clone https://github.com/flutter/flutter.git -b stable --depth 1
-    - export PATH="$PATH:`pwd`/flutter/bin"
-    - flutter doctor
-    - flutter pub get
-    - echo "Building Flutter Web app..."
-    - flutter build web
-    - echo "Build completed!"
+version: 1
+applications:
+  - frontend:
+      phases:
+        preBuild:
+          commands:
+            - echo "Installing Flutter SDK"
+            - git clone https://github.com/flutter/flutter.git -b stable --single-branch
+            - export PATH="$PATH:pwd/flutter/bin"
+            - flutter doctor
+            - flutter pub get
+        build:
+          commands:
+            - flutter build web
+        postBuild:
+          commands:
+            - echo "Build completed"
+      artifacts:
+        baseDirectory: build/web
+        files:
+          - '*/'
+      cache:
+        paths:
+          - 'flutter/.pub-cache/*'
+          - 'build/*'
