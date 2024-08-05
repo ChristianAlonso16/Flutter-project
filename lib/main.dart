@@ -1,5 +1,7 @@
-import 'package:firstapp/global/presentation/screen/admin/menu_admin_screen.dart';
+import 'package:firstapp/global/data/repository/car_repository.dart';
+import 'package:firstapp/global/presentation/screen/get_All_cars.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,101 +12,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home:MenuAdminScreen(title: "mi primera pagina 9B",),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(
+          create: (context) => CarRepository(
+            apiUrl: 'https://fohggt0wwd.execute-api.us-east-1.amazonaws.com/Prod/', accessToken: 'eyJraWQiOiI3cFNuZ3RJOXhcL0pCRlJjOWFGV2UwcTc2aFNJU09GWk5GMVg5QXdZVytJcz0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJlNGY4YjQyOC1hMGIxLTcwMjAtMDA0NC05NzEyMmYyM2VkMzMiLCJjb2duaXRvOmdyb3VwcyI6WyJDbGllbnRVc2VyR3JvdXAiXSwiZW1haWxfdmVyaWZpZWQiOnRydWUsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTEuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0xX1pMOGhPNzVjeSIsImNvZ25pdG86dXNlcm5hbWUiOiJlNGY4YjQyOC1hMGIxLTcwMjAtMDA0NC05NzEyMmYyM2VkMzMiLCJvcmlnaW5fanRpIjoiMmM2ZGI0MDQtOTVmMC00OTc4LTg1NWYtMWEwYjYwYzBmM2JlIiwiYXVkIjoiNDI1MHNmaW5nNmYwdjI0czNvbGVsZ3JuZWMiLCJldmVudF9pZCI6IjQzYzQ4ZTU3LTViOWMtNDIyMC04ODljLTEwNGNiZjZkOWU4MiIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNzIyNDc4Mjg2LCJleHAiOjE3MjI1NjQ2ODYsImlhdCI6MTcyMjQ3ODI4NiwianRpIjoiMWM4ODU5MTQtNjE4NC00ZDkwLTlmYWQtODE2MTQyM2I2NGQ4IiwiZW1haWwiOiIyMDIxM3RuMDc2QHV0ZXouZWR1Lm14In0.D5FH4XR384SfXtzmGquR8NspcSO0we_WVvMXWAHBC1pdERoWB0yRFowUi_1WgmS4aOyWSkP_X-MsZoupSH9gpmaum22EUHedCPAtymvzmBu2KLUvwVicwZ_cO9V5xy7qLJ44DbRtvt8zqzfm-eKvE8lHn_dhnEKFttpPMQDbI_amIsghYc99PvR5X7F_S1jheVlxgr6MTzVA-WGc8jYKliQbV5S2-NTLv0JW7IFY-2p1W_NvY_ejIqdzB2qlQfTP_BclI7P17PcXvYzUgAFYqZTw4Vw73O7ImVQ7DU74ZmV3K0TAZuriWTL0t65q8r23WGuPSTZax-zJRxmANIr0WA', // Reemplaza con tu URL
+            //accessToken: 'your-access-token', // Reemplaza con tu token
+          ),
         ),
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        home: const CarrListView(), // Cambia esto para mostrar tu vista
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
