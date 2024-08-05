@@ -23,7 +23,6 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-# Add environment setup for CI/CD
 version: 1
 applications:
   - frontend:
@@ -31,7 +30,7 @@ applications:
         preBuild:
           commands:
             - echo "Installing Flutter SDK"
-            - git clone https://github.com/flutter/flutter.git -b stable --single-branch
+            - git clone https://github.com/flutter/flutter.git -b stable --depth 1
             - export PATH="$PATH:`pwd`/flutter/bin"
             - flutter doctor
             - flutter pub get
